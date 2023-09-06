@@ -1,11 +1,5 @@
-import java.io.FileWriter;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.Scanner;
+
 //    Напишите приложение, которое будет запрашивать у пользователя следующие данные в произвольном порядке,
 //    разделенные пробелом: Фамилия Имя Отчество, дата_рождения, номер телефона, пол
 //    Форматы данных:фамилия, имя, отчество - строки
@@ -33,74 +27,19 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        String [] textArr = dataInput();
-        System.out.println(Arrays.toString(textArr));
-        // TODO textArr[3]
-        dateCheck(textArr[3]);
-        phoneCheck(textArr[4]);
-        genderCheck(textArr[5]);
-        saveFile(textArr[0],textToFile(textArr));
+        String [] textArr = DataInput.dataInput();
+        DataCheck.dateCheck(textArr[3]);
+        PhoneCheck.phoneCheck(textArr[4]);
+        GenderCheck.genderCheck(textArr[5]);
+        SaveFile.saveFile(textArr[0],TextToFile.textToFile(textArr));
     }
 
-    public static String[] dataInput(){
-        //TODO включить сканер
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Введите Фамилия Имя Отчество, дата_рождения формата dd.mm.yyyy, " +
-                "номер телефона, пол f или m (через пробел)");
-        //String string = scanner.nextLine();
-        // TODO удалить
-        String text = "Краснов Алексей Евгеньевич 23.08.1980 89200723170 m";
-        String [] textArr = text.split(" ");
-        if (textArr.length>6){
-            throw new MyArraySizeException("Вы ввели больше данных чем требуется");
-        }
-        if (textArr.length<6){
-            throw new MyArraySizeException("Вы ввели меньше данных чем требуется");
-        }
-        return textArr;
-    }
-    public static void dateCheck(String textData){
-        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        try {
-            Date date = dateFormat.parse(textData);
-            String strDate = dateFormat.format(date);
-            // TODO дата рождение больше текущей
-            if (!textData.equals(strDate)){
-                // TODO MyArraySizeException
-                throw new RuntimeException();
-            }
-        } catch (ParseException | RuntimeException e) {
-            throw new RuntimeException("Вы ввели неверную дату");
-        }
 
-    }
-    public static void phoneCheck(String textPhone){
-        try {
-            Long numberPhone = Long.parseLong(textPhone);
-        } catch (NumberFormatException e){
-            throw new NumberFormatException("Вы ввели неверный номер телефона");
-        }
-    }
-    public static void genderCheck(String gender){
-        if (!gender.equals("f") && !gender.equals("m")){
-            throw new RuntimeException("Неправильно введен пол");
-        }
-    }
-    public static void saveFile(String path, String text){
-        try (FileWriter fileWriter = new FileWriter(path, true)) {
-            fileWriter.write(text);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    public static String textToFile(String[] textArr){
-        StringBuilder stringBuilder = new StringBuilder();
-        for (String text: textArr) {
-            stringBuilder.append("<");
-            stringBuilder.append(text);
-            stringBuilder.append(">");
-        }
-        stringBuilder.append("\n");
-        return stringBuilder.toString();
-    }
+
+
+
+
+
+
+
 }
